@@ -33,4 +33,4 @@
 ## HttpServletRequest 사용법
 
 - 헤더 정보를 확인하는 법 다음 소스코드 참고
-- [headerServlet](./servlet/build/classes/java/main/hello/servlet/basic/request/RequestHeaderServlet.class)
+- [headerServlet](./servlet/src/main/java/hello/servlet/basic/request/RequestHeaderServlet.java)
