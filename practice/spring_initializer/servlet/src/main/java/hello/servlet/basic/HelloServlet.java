@@ -13,19 +13,20 @@ public class HelloServlet  extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //super.service(req, resp);
 
-        //Service testting
+        //Service testing
         System.out.println("HelloServlet.service");
 
-        //httpServelet Interface
+        //httpServlet Interface
         System.out.println("response = " + response);
         System.out.println("response = " + response);
 
-        //GET methoe testing
+        //GET method testing
         String username = request.getParameter("username");
         System.out.println("username = " + username);
 
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
+
         response.getWriter().write("hello " + username);
     }
 }
