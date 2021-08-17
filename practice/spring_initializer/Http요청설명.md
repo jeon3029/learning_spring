@@ -19,3 +19,10 @@
 - HTTP API에서 주로 사용, JSON, XML, TEXT
 
 ## GET 방식 쿼리 파라미터
+
+### 쿼리 예시
+
+- http://localhost:8080/request-param?username=hello&age=20
+  - request.getParameter() 로 정보 꺼내서 씀
+- http://localhost:8080/request-param?username=hello&age=20&username=hello2
+  - 중복일 때는 request.getParameterValues() 를 사용
