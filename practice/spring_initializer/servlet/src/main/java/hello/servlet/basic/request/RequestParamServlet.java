@@ -30,6 +30,7 @@ public class RequestParamServlet extends HttpServlet {
 
         System.out.println("[이름같은 파라미터 조회] - start");
         String[] usernames = request.getParameterValues("username");
+        System.out.println("usernames.length = " + usernames.length);
         for(String name:usernames){
             System.out.println("name = " + name);
         }
