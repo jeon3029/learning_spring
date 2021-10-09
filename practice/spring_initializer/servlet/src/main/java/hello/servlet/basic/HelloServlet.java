@@ -17,7 +17,7 @@ public class HelloServlet  extends HttpServlet {
         System.out.println("HelloServlet.service");
 
         //httpServlet Interface
-        System.out.println("response = " + response);
+        System.out.println("request = " + request);
         System.out.println("response = " + response);
 
         //GET method testing
