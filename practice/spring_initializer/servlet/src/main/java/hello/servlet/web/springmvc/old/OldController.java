@@ -14,6 +14,8 @@ public class OldController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("OldController.handleRequest");
 //        return null;
+
+        //application.properties 의 suffix, prefix 와 연동되어 경로를 찾음
         return new ModelAndView("new-form");
     }
 }
