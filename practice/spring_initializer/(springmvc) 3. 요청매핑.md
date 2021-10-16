@@ -1,5 +1,7 @@
 # 요청매핑
 
+## 코드로 보는 요청매핑
+
 - [MappingController](./springmvc/src/main/java/hello/springmvc/basic/requestmapping/MappingController.java)
 - 기본 설정
   - @RestController
@@ -36,3 +38,7 @@
 - 미디어 타입 조건 매핑 - HTTP 요청 Accept : `produce`
   - HTTP 요청의 Accept 헤더를 기반으로 미디어 타입으로 매핑
   - 만약 맞지 않으면 HTTP 406 상태코드(Not Acceptable)을 반환
+
+## 요청매핑 - API 예시
+
+- [MappingClassController](./springmvc/src/main/java/hello/springmvc/basic/requestmapping/MappingClassController.java)
