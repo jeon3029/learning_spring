@@ -35,3 +35,6 @@
 
 - /resources/static/index.hml
 - [index.html](./springmvc/src/main/resources/static/index.html)
+
+> 참고
+> <https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.developing-web-applications.spring-mvc.welcome-page>
