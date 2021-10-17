@@ -47,7 +47,40 @@
 
 - 코드로 알아보자
 - [RequestParamController](./springmvc/src/main/java/hello/springmvc/basic/request/RequestParamController.java)
-  - request-param-v1
-  - Test :
-    - GET : <http://localhost:8080/request-param-v1?username=hello&age=20>
-    - POST Form : [hello-form.html](./servlet/src/main/webapp/basic/hello-form.html)
+  - request-param-v1 : HttpServletRequest
+    - Test :
+      - GET : <http://localhost:8080/request-param-v1?username=hello&age=20>
+      - POST Form : [hello-form.html](./servlet/src/main/webapp/basic/hello-form.html)
+  - request-param-v2 : @Requestparam
+    - requestparam 사용하여 간편하게 사용
+    - @ResponseBody : string 을 http body 에 넣어서 보내줌
+  - request-param-v3
+    - 변수명이 같으면 생략가능
+  - request-param-v4
+    - 더 간단하게도 가능
+    - 너무 없으면 과하다는 (주관적인) 생각 / @Requestparam 은 명확하게 요청 파리미터에서 데이터를 읽는 다는 것을 알 수 있다
+  - /request-param-required
+    - required로 필수값 설정
+    - /request-param?username=
+      - 빈문자도 가능 : null 과 "" 의 차이
+  - /request-param-default
+    - defaultValue 설정
+    - 기본값이 있는경우, required 는 의미가 없음
+    - "" 의 경우에도 defaultValue 로 설정됨
+  - /request-param-map
+    - paramMap 형태로도 조회 가능
+  - @ModelAttribute 형태(객체로 바로 받기)
+    - [HelloData](./servlet/src/main/java/hello/servlet/basic/HelloData.java)
+    - /model-attribute-v1
+      - 스프링MVC는 @ModelAttribute 가 있으면 다음을 실행한다.
+        - HelloData 객체를 생성한다.
+        - 요청 파라미터의 이름으로 HelloData 객체의 프로퍼티를 찾는다. 그리고 해당 프로퍼티의 setter를 호출해서 파라미터의 값을 입력(바인딩) 한다.
+        - (예) 파라미터 이름이 username 이면 setUsername() 메서드를 찾아서 호출하면서 값을 입력한다.
+      - (참고) 프로퍼티
+        - 객체에 getUsername() , setUsername() 메서드가 있으면, 이 객체는 username 이라는 프로퍼티를 가지고 있다.
+      - (참고) 바인딩 오류
+        - age=abc 처럼 숫자가 들어가야 할 곳에 문자를 넣으면 BindException 이 발생한다. 이런 바인딩 오류를 처리하는 방법은 **검증 부분**(추후 다룰예정)에서 다룬다.
+    - /model-attribute-v2
+      - @ModelAttribute 생략가능
+      - 생략시, String , int , Integer 같은 단순 타입 = @RequestParam
+      - 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)

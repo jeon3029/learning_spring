@@ -1,5 +1,6 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,7 @@ public class RequestParamController {
         response.getWriter().write("ok");
     }
 
-    @ResponseBody
+    @ResponseBody // return 하는 문자를 http body 에 넣어서 보내줌(@RestController)
     @RequestMapping("/request-param-v2")
     public String requestParamV2(
             @RequestParam("username") String memberName,
@@ -78,17 +79,17 @@ public class RequestParamController {
         return "ok";
     }
 
-//    @ResponseBody
-//    @RequestMapping("/model-attribute-v1")
-//    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
-//        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
-//        return "ok";
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping("/model-attribute-v2")
-//    public String modelAttributeV2(HelloData helloData) {
-//        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
-//        return "ok";
-//    }
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        return "ok";
+    }
 }
