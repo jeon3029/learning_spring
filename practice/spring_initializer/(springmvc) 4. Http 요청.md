@@ -17,7 +17,6 @@
     - 기본 값 속성: defaultValue
 - @CookieValue(value = "myCookie", required = false) String cookie
   - 특정 쿠키를 조회한다.
-  - 속성
     - 필수 값 여부: required
     - 기본 값: defaultValue
 - MultiValueMap
@@ -84,3 +83,10 @@
       - @ModelAttribute 생략가능
       - 생략시, String , int , Integer 같은 단순 타입 = @RequestParam
       - 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)
+
+## Http 요청 파라미터 - 단순 텍스트
+
+- HTTP message body에 데이터를 직접 담아서 요청
+  - HTTP API에서 주로 사용, JSON, XML, TEXT
+  - 데이터 형식은 주로 JSON 사용
+  - POST, PUT, PATCH
