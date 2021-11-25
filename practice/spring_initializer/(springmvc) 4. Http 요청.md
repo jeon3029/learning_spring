@@ -90,3 +90,27 @@
   - HTTP API에서 주로 사용, JSON, XML, TEXT
   - 데이터 형식은 주로 JSON 사용
   - POST, PUT, PATCH
+  - Body 를 통해 데이터가 직접 데이터가 넘어오는 경우는 `@RequestParam` , `@ModelAttribute` 를 사용할 수 없다.
+
+- [RequestBodyStringController](./springmvc/src/main/java/hello/springmvc/basic/request/RequestBodyStringController.java)
+  - /request-body-string-v1
+    - HTTP 메시지 바디의 데이터를 InputStream 을 사용해서 직접 읽음
+    - 인코딩방식 설정 후 출력
+  - /request-body-string-v2
+    - 스프링 MVC는 다음 파라미터를 지원한다.
+      - InputStream(Reader): HTTP 요청 메시지 바디의 내용을 직접 조회
+      - OutputStream(Writer): HTTP 응답 메시지의 바디에 직접 결과 출력
+  - /request-body-string-v3
+    - `HttpEntity` : HTTP header, body 정보를 편리하게 조회
+    - `HttpEntity` 는 응답에도 사용 가능
+    - `HttpEntity`의 상속객체
+      - `RequestEntity`
+        - HttpMethod, url 정보가 추가, 요청에서 사용
+      - `ResponseEntity`
+        - HTTP 상태 코드 설정 가능, 응답에서 사용
+    - 내부적으로 HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
+  - /request-body-string-v4
+    - @RequestBody 를 사용하면 HTTP 메시지 바디 정보를 편리하게 조회할 수 있다.
+      - 참고로 헤더 정보가 필요하다면 HttpEntity 를 사용하거나 @RequestHeader 를 사용하면 된다.
+    - @ResponseBody 를 사용하면 응답 결과를 HTTP 메시지 바디에 직접 담아서 전달할 수 있다.
+      - 물론 이 경우에도 view를 사용하지 않는다.

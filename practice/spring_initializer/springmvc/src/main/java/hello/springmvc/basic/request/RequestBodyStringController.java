@@ -7,7 +7,6 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Controller
 public class RequestBodyStringController {
+
     @PostMapping("/request-body-string-v1")
     public void requestBodyString(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ServletInputStream inputStream = request.getInputStream();
@@ -45,6 +45,7 @@ public class RequestBodyStringController {
         log.info("messageBody={}", messageBody);
 
         return new HttpEntity<>("ok");
+        //return new ResponseEntity<String>("Hello World", responseHeaders, HttpStatus.CREATED);
     }
 
     @ResponseBody
