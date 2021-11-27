@@ -52,3 +52,21 @@ spring.thymeleaf.suffix=.html
 공식 문서
 > <https://docs.spring.io/spring-boot/docs/2.4.3/reference/html/appendix-application-properties.html#common-application-properties-templating>
 
+## HTTP 응답 - 메시지 바디, 상태코드
+
+HTTP 요청에서 응답까지 대부분 다루었지만 정리하는 목적
+- 정적 리소스나 뷰템플릿을 거치지 않고 바로 전달하는 경우
+
+- [ResponseBodyController](./src/main/java/hello/springmvc/basic/response/ResponseBodyController.java)
+- responseBodyV1
+  - HttpServletResponse 객체를 통해서 HTTP 메시지 바디에 직접 ok 응답 메시지를 전달한다.
+- responseBodyV2
+  - ResponseEntity 엔티티는 HttpEntity 를 상속 받았는데, HttpEntity는 HTTP 메시지의 헤더, 바디 정보를 가지고 있다. ResponseEntity 는 여기에 더해서 HTTP 응답 코드를 설정할 수 있다.
+- responseBodyV3
+  - @ResponseBody 를 사용하면 view를 사용하지 않고, HTTP 메시지 컨버터를 통해서 HTTP 메시지를 직접 입력할 수 있다. ResponseEntity 도 동일한 방식으로 동작한다.
+- responseBodyJsonV1
+  - ResponseEntity 를 반환한다. HTTP 메시지 컨버터를 통해서 JSON 형식으로 변환되어서 반환된다.
+- responseBodyJsonV2
+  - ResponseEntity 는 HTTP 응답 코드를 설정할 수 있는데, @ResponseBody 를 사용하면 이런 것을 설정하기 까다롭다.
+  - @ResponseStatus(HttpStatus.OK) 애노테이션을 사용하면 응답 코드도 설정할 수 있다.
+  - 동적으로 응답코드 설정하고 싶다면, `ResponseEntity` 사용하면 된다.
