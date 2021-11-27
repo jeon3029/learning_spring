@@ -114,3 +114,31 @@
       - 참고로 헤더 정보가 필요하다면 HttpEntity 를 사용하거나 @RequestHeader 를 사용하면 된다.
     - @ResponseBody 를 사용하면 응답 결과를 HTTP 메시지 바디에 직접 담아서 전달할 수 있다.
       - 물론 이 경우에도 view를 사용하지 않는다.
+
+## Http 요청 메세지 - json
+
+- http api 에서 주로 사용하는 형식
+- [RequestBodyJsonController](./springmvc/src/main/java/hello/springmvc/basic/request/RequestBodyJsonController.java)
+- /request-body-json-v1
+  - objectMapper 직접 사용
+- /request-body-json-v2
+  - @RequestBody
+    - HttpMessageConverter 사용 -> StringHttpMessageConverter 적용
+  - @ResponseBody
+    - 메시지 바디 정보 직접 반환(view 조회X)
+- /request-body-json-v3
+  - `HttpEntity` , `@RequestBody` 를 사용하면 HTTP 메시지 컨버터가 HTTP 메시지 바디의 내용을 우리가 원하는 문자나 객체 등으로 변환해줌
+  - @RequestBody는 생략 불가능
+    - 생략하면 @ModelAttribute 로 취급
+    > @ModelAttribute , @RequestParam 해당 생략시 다음과 같은 규칙을 적용
+    > - String , int , Integer 같은 단순 타입 = @RequestParam
+    > - 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)
+- /request-body-json-v4
+  - `HttpEntity` 방식
+- /request-body-json-v5
+  - 응답의 경우도 객체를 바디에 직접 넣을 수 있음
+  - Accept 헤더에 따름
+  - @RequestBody 요청
+    - JSON 요청 HTTP 메시지 컨버터 객체
+  - @ResponseBody 응답
+    - 객체 HTTP 메시지 컨버터 JSON 응답
