@@ -102,3 +102,95 @@ void hello(@RequetsBody String data) {}
     - HTTP 요청의 Accept 미디어 타입을 지원하는가.(더 정확히는 @RequestMapping 의 produces )
       - 예) text/plain , application/json , \*/*
   - canWrite() 조건을 만족하면 write() 를 호출해서 HTTP 응답 메시지 바디에 데이터를 생성한다.
+
+## Request Mapping Handler Adapter 구조 및 동작 과정(컨버터 동작 포함)
+
+- spring mvc 구조
+![img2](./img/spring_구조.png)
+
+- 어디에서 메세지 컨버터가 호출되고 동작하는걸까?
+  - 모든 과정이 @RequestMapping 을 처리하는 핸들러 어댑터인 `RequestMappingHandlerAdapter` (요청 매핑 헨들러 어뎁터)에 있다
+
+- RequestMappingHandlerAdapter 동작 방식
+- ![img3](./img/RequestMappingHandlerAdapter.png)
+
+### ArgumentResolver
+
+- `RequestMappingHandlerAdaptor` 줄여서 ArgumentResolver
+- `ArgumentResolver` 가 HttpServletRequest ,Model 은 물론이고, @RequestParam , @ModelAttribute 같은 애노테이션 그리고 @RequestBody , HttpEntity 같은 HTTP 메시지까지 유연하게 처리를 해 준다.
+- RequestMappingHandlerAdaptor 는 ArgumentResolver 를 호출해서 컨트롤러가 필요로 하는 다양한 파라미터 값을 생성하고 넘겨준다.
+- 30개가 넘는 ArgumentResolver 제공
+
+> 공식문서
+> <https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-arguments>
+
+`HandlerMethodArgumentResolver`
+
+```java
+public interface HandlerMethodArgumentResolver {
+      boolean supportsParameter(MethodParameter parameter);
+@Nullable
+      Object resolveArgument(MethodParameter parameter, @Nullable
+    ModelAndViewContainer mavContainer,
+              NativeWebRequest webRequest, @Nullable WebDataBinderFactory
+    binderFactory) throws Exception;
+}
+```
+
+- HandlerMethodArgumentResolver 의 구현체를 보면 얼마나 많은지 알 수 있음.
+- ArgumentResolver 의 supportsParameter() 를 호출해서 해당 파라미터를 지원하는지 체크하고, 지원하면 resolveArgument() 를 호출해서 실제 객체를 생성
+- 인터페이스로 설계외어 있어서 기능을 확장하기 쉬움
+  - 커스텀 하게 ArgumentResolver 를 만들수 있음
+
+### ReturnValueHandler
+
+- `HandlerMethodReturnValueHandler` 를 줄여서 `ReturnValueHandle`
+- 컨트롤러에서 String으로 뷰 이름을 반환해도, 동작하는 이유가 바로 ReturnValueHandler 덕분
+  - 코드로 확인
+- 10여개가 넘는 ReturnValueHandler 를 지원
+
+> 공식 문서
+> <https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-return-types>
+
+### HttpMessageConverter
+
+![img3](./img/http_converter.png)
+
+- 요청의 경우 @RequestBody 를 처리하는 ArgumentResolver 가 있고, HttpEntity 를 처리하는 ArgumentResolver 가 있다. 이 ArgumentResolver 들이 HTTP 메시지 컨버터를 사용해서 필요한 객체를 생성
+- 응답의 경우 @ResponseBody 와 HttpEntity 를 처리하는 ReturnValueHandler 가 있다. 그리고 여기에서 HTTP 메시지 컨버터를 호출해서 응답 결과를 만듦
+- 예) @RequestBody @ResponseBody 가 있으면
+  - RequestResponseBodyMethodProcessor(ArgumentResolver)
+- 예) HttpEntity 가 있으면
+  - HttpEntityMethodProcessor(ArgumentResolver)
+
+### 확장
+
+모두 인터페이스로 제공 -> 언제든지 확장 가능
+
+- HandlerMethodArgumentResolver
+- HandlerMethodReturnValueHandler
+- HttpMessageConverter
+
+- 실제 기능확장하는 경우는 많지 않음...
+- 하지만, 필요한 경우 기능 확장은 `WebConfigurer` 를 상속받아서 스프링 빈으로 등록하는 방식
+
+```java
+@Bean
+public WebMvcConfigurer webMvcConfigurer() {
+  return new WebMvcConfigurer() {
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver>
+resolvers) {
+  ////
+    }
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>>
+    converters) {
+    //...
+    }
+  };
+}
+```
+
+- 실제 사용방식은 필요할 때 검색하서 알아보자
+
