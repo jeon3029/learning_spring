@@ -95,3 +95,32 @@
 > 타임리프는 순수 HTML을 파일을 웹 브라우저에서 열어도 내용을 확인할 수 있고, 서버를 통해 뷰 템플릿을 거치면 동적으로 변경된 결과를 확인할 수 있다. 
 > JSP를 생각해보면, JSP 파일은 웹 브라우저에서 그냥 열면 JSP 소스코드와 HTML이 뒤죽박죽 되어서 정상적인 확인이 불가능하다. 오직 서버를 통해서 JSP를 열어야 한다.
 > 이렇게 순수 HTML을 그대로 유지하면서 뷰 템플릿도 사용할 수 있는 타임리프의 특징을 `네츄럴 템플릿 (natural templates)`이라 한다.
+
+## 상품 상세(item)
+
+- [BasicController](./item-service/src/main/java/hello/itemservice/web/basic/BasicItemController.java) 에 추가
+  - @GetMapping("/{itemId}")
+
+- [item_thymeleaf](./item-service/src/main/resources/templates/basic/item.html)
+  - 속성 변경
+    - th:value th:value="${item.id}"
+  - 모델에 있는 item 정보를 획득하고 프로퍼티 접근법으로 출력한다. ( item.getId() ) 
+  - value 속성을 th:value 속성으로 변경한다.
+  - 상품수정 링크
+    - th:onclick="|location.href='@{/basic/items/{itemId}/edit(itemId=${item.id})}'|"
+  - 목록으로 링크
+    - th:onclick="|location.href='@{/basic/items}'|"
+
+## 상품 등록
+
+- [BasicController](./item-service/src/main/java/hello/itemservice/web/basic/BasicItemController.java) 에 추가
+  - GetMapping("/add")
+- [addform_thymeleaf](./item-service/src/main/resources/templates/basic/addForm.html)
+  - 속성 변경 : `th:action`
+  - HTML form에서 action 에 값이 없으면 현재 URL에 데이터를 전송한다.
+  - 상품 등록 폼의 URL과 실제 상품 등록을 처리하는 URL을 똑같이 맞추고 HTTP 메서드로 두 기능을 구분한다.
+    - 상품 등록 폼: GET /basic/items/add
+    - 상품 등록 처리: POST /basic/items/add
+    - 이렇게 하면 하나의 URL로 등록 폼과, 등록 처리를 깔끔하게 처리할 수 있다.
+  - 취소
+    - 취소시 상품 목록으로 이동한다. th:onclick="|location.href='@{/basic/items}'|
