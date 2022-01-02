@@ -204,3 +204,18 @@
 
 > 주의
 > "redirect:/basic/items/" + item.getId() redirect에서 +item.getId() 처럼 URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험하다. 다음에 설명하는 RedirectAttributes 를 사용하자.
+
+## RedirectAttributes
+
+- 상품 상세 화면에 "저장되었습니다"라는 메시지를 보여달라는 요구사항
+- [BasicController](./item-service/src/main/java/hello/itemservice/web/basic/BasicItemController.java)
+  - addItemV6
+  - 실행해보면 다음과 같은 리다이렉트 결과가 나온다. 
+  - <http://localhost:8080/basic/items/3?status=true>
+  - `RedirectAttributes`
+  - RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible , 쿼리 파라미터까지 처리
+    - redirect:/basic/items/{itemId}
+      - pathVariable 바인딩: {itemId}
+      - 나머지는 쿼리 파라미터로 처리: ?status=true
+- [item_thymeleaf](./item-service/src/main/resources/templates/basic/item.html)
+  - th:if : 해당 조건이 참이면 실행
