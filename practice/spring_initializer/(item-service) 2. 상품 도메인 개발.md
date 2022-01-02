@@ -156,3 +156,24 @@
   - addItemV4
     - @ModelAttribute 자체도 생략가능
     - 대상 객체는 모델에 자동 등록된다. 나머지 사항은 기존과 동일
+
+## 상품 수정(editForm)
+
+- [BasicController](./item-service/src/main/java/hello/itemservice/web/basic/BasicItemController.java)
+  - 상품 수정 폼
+    - @GetMapping("/{itemId}/edit") 추가
+  - 상품 수정
+    - @PostMapping("/{itemId}/edit") 추가
+    - 마지막에 redirect 호출함
+      - 스프링은 redirect:/... 으로 편리하게 리다이렉트를 지원한다.
+      - 컨트롤러에 매핑된 @PathVariable 의 값은 redirect 에도 사용 할 수 있다.
+        - redirect:/basic/items/{itemId} {itemId} 는 @PathVariable Long itemId 의 값을 그대로 사용한다.
+
+> 참고
+> HTML Form 전송은 PUT, PATCH를 지원하지 않는다. GET, POST만 사용할 수 있다.
+> PUT, PATCH는 HTTP API 전송시에 사용
+> 스프링에서 HTTP POST로 Form 요청할 때 히든 필드를 통해서 PUT, PATCH 매핑을 사용하는 방법이 있지만(가능하지만, 권장 X), HTTP 요청상 POST 요청이다.
+> - 자세한 내용은 html form put, delete 등으로 검색하면 알아볼 수 있음
+
+- [editform_thymeleaf](./item-service/src/main/resources/templates/basic/editForm.html)
+  - 속성 변경 : `th:action` 은 반복적인 내용이라 설명은 제외한다. 이전 방식과 비슷하다.
