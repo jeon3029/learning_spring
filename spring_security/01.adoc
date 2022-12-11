@@ -5,6 +5,8 @@ Doc Writer <taejjeon@gmail.com>
 :source-highlighter: rouge
 :toc:
 :hardbreaks:
+// images:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img1.png
 
 An example of a basic https://asciidoc.org[AsciiDoc] document prepared by {author}.
 
@@ -12,7 +14,7 @@ An example of a basic https://asciidoc.org[AsciiDoc] document prepared by {autho
 
 - 다음 디펜덴시를 적용하면 스프링에 security 가 전역으로 적용이 됨
 - 이를 사용자 환경에 맞게 커스텀 해서 사용해야 함.
-image::img/img1.png[]
+image::{image-url1}[]
 [source,xml]
 ----
 <dependency>
