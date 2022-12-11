@@ -14,7 +14,9 @@ An example of a basic https://asciidoc.org[AsciiDoc] document prepared by {autho
 
 - 다음 디펜덴시를 적용하면 스프링에 security 가 전역으로 적용이 됨
 - 이를 사용자 환경에 맞게 커스텀 해서 사용해야 함.
-image::{image-url1}[]
+
+image::{image-url1}[spring-security,300]
+
 [source,xml]
 ----
 <dependency>
