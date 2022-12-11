@@ -1,0 +1,33 @@
+= Security Project 적용
+Doc Writer <doc@example.com>
+:reproducible:
+:listing-caption: Listing
+:source-highlighter: rouge
+:toc:
+
+An example of a basic https://asciidoc.org[AsciiDoc] document prepared by {author}.
+
+== Dependency
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+----
+
+
+.WebSecurityConfigurerAdapter
+[source,java]
+----
+protected void configure(HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+        .formLogin().and()
+        .httpBasic();
+}
+----
+
