@@ -1,14 +1,18 @@
 = Security Project 적용
-Doc Writer <doc@example.com>
+Doc Writer <taejjeon@gmail.com>
 :reproducible:
-:listing-caption: Listing
+:listing-caption: Source
 :source-highlighter: rouge
 :toc:
+:hardbreaks:
 
 An example of a basic https://asciidoc.org[AsciiDoc] document prepared by {author}.
 
 == Dependency
 
+- 다음 디펜덴시를 적용하면 스프링에 security 가 전역으로 적용이 됨
+- 이를 사용자 환경에 맞게 커스텀 해서 사용해야 함.
+image::img/img1.png[]
 [source,xml]
 ----
 <dependency>
@@ -61,3 +65,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 spring.security.user.name=user
 spring.security.user.password=1234
 ----
+
+- 세부적인 인증 처리하는 HttpSecurity 가능
+.HttpSecurity
+[source,markdown]
+---
+- Authenticate(Confirm user)
+```java
+http.formLogin()
+http.logout()
+http.csrf()
+http.httpBasic()
+http.SessionManagement()
+http.RememberMe()
+http.ExceptionHandling()
+http.addFilter()
+```
+
+- Authorize(Give user permission)
+```java
+http.authorizeRequests()
+.antMatchers(/admin)
+.hasRole(USER)
+.permitAll()
+.authenticated()
+.fullyAuthentication()
+.acess(hasRole(USER))
+.denyAll()
+```
+
+---
