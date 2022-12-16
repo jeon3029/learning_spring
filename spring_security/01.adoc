@@ -1,5 +1,5 @@
 = Security Project 적용
-Doc Writer <taejjeon@gmail.com>
+jeon3029 <taejjeon@gmail.com>
 :reproducible:
 :listing-caption: Source
 :source-highlighter: rouge
@@ -8,7 +8,7 @@ Doc Writer <taejjeon@gmail.com>
 // images:
 :image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img1.png
 
-An example of a basic https://asciidoc.org[AsciiDoc] document prepared by {author}.
+Spring Security Basic-01 : {author}.
 
 == Dependency
 
@@ -20,8 +20,8 @@ image::{image-url1}[spring-security,300]
 [source,xml]
 ----
 <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-security</artifactId>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 ----
 
@@ -71,6 +71,7 @@ spring.security.user.password=1234
 ----
 
 - 세부적인 인증 처리하는 HttpSecurity 가능
+
 .HttpSecurity
 [source,markdown]
 ---
@@ -98,4 +99,43 @@ http.authorizeRequests()
 .denyAll()
 ```
 
----
+== Configure WebSecurityConfigurerAdapter
+
+.MySecurityConfig
+[source,java]
+----
+@Configuration
+@EnableWebSecurity
+public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.authorizeRequests()
+				.anyRequest().authenticated();
+		http
+        .formLogin()
+				.loginPage("/loginPage")
+				.defaultSuccessUrl("/")
+				.failureUrl("/login")
+				.usernameParameter("userId")
+				.passwordParameter("passwd")
+				.loginProcessingUrl("/login_proc")
+				.successHandler(new AuthenticationSuccessHandler() {
+					@Override
+					public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+						System.out.println("success : " + authentication.toString());
+            httpServletResponse.sendRedirect("/");
+					}
+				})
+				.failureHandler(new AuthenticationFailureHandler() {
+					@Override
+					public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+						System.out.println("failed : " + e.getMessage());
+            httpServletResponse.sendRedirect("/login");
+					}
+				})
+		.permitAll(); //loginPage 인증 해제
+
+	}
+}
+----
