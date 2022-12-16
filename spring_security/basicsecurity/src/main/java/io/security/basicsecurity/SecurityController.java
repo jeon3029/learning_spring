@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SecurityController {
 	@GetMapping("/")
-	public String hellp(){
-		return "ok";
+	public String hello(){
+		return "home";
+	}
+	@GetMapping("/loginPage")
+	public String loginPage(){
+		return "loginPage";
 	}
 }
