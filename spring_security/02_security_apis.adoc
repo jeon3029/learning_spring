@@ -1,4 +1,4 @@
-= Spring Security - Form 인증
+= Spring Security - 인증 API
 jeon3029 <taejjeon@gmail.com>
 :reproducible:
 :listing-caption: Source
@@ -8,6 +8,7 @@ jeon3029 <taejjeon@gmail.com>
 // images:
 :image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_1.png
 :image-url2: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_2.png
+:image-url3: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_3.png
 
 Spring Security 02-Form : {author}.
 
@@ -48,9 +49,43 @@ protected void successfulAuthentication(HttpServletRequest request,....){
 ----
 
 
-== FilterChainProxy
+=== FilterChainProxy
 
 image::{image-url2}[FilterChainProxy,400]
 
 - 각 필터는 `FilterChainProxy` 에 의해 순서대로 등록하고 있음
+
+== Logout Filter
+
+.configure
+[source,java]
+----
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  @Override
+	protected void configure(HttpSecurity http) throws Exception {
+	http.logout()
+		.logoutUrl("/logout")
+		.logoutSuccessUrl("login")
+		.deleteCookies("JSESSIONID","remember-me")
+		.addLogoutHandler(new LogoutHandler() {
+
+	  	@Override
+		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+			HttpSession session = request.getSession();
+			session.invalidate();
+		  }
+		})
+		.logoutSuccessHandler(new LogoutSuccessHandler() {
+
+		  @Override
+		  public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+			  Authentication authentication) throws IOException, ServletException {
+				response.sendRedirect("/login");
+		  }
+		});
+	}
+}
+----
+
+image::{image-url3}[LogoutFilter,800]
 
