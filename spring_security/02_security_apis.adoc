@@ -11,6 +11,7 @@ jeon3029 <taejjeon@gmail.com>
 :image-url3: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_3.png
 :image-url4: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_4.png
 :image-url5: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_5.png
+:image-url6: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_6.png
 
 Spring Security 02-Form : {author}.
 
@@ -92,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 image::{image-url3}[LogoutFilter,800]
 
 
-== Remember Me
+== RememberMeAuthenticationFilter
 
 [source,java]
 ----
@@ -109,6 +110,31 @@ image::{image-url4}[saved cookies]
 
 - remember-me 쿠키를 통해 JSESSIONID 가 없어도 인증 가능(저장)
 
-=== RememberMeAuthenticationFilter
+=== Filter 세부 동작
 
 image::{image-url5}[Remember me 인증,800]
+
+== AnonymousAuthenticationFilter
+
+image::{image-url6}[AnonymousAuthenticationFilter,800]
+
+[source,java]
+----
+public void doFilter(...){
+	if (SecurityContextHolder.getContext().getAuthentication() == null) {
+		SecurityContextHolder.getContext().setAuthentication(
+					createAuthentication((HttpServletRequest) req));
+		//익명 객체라는 기본적인 정보를 담아 저장
+		//...
+	}
+}
+----
+
+image::{image-url7}[익명 객체 정보,500]
+
+- 참고
+	- `AbstractSecurityInterceptor`
+		- getAuthentication()으로 리소스 접근 허용여부 판단
+	- `AuthenticationTrustResolverImpl`
+		- 익명객체 판단 로직
+
