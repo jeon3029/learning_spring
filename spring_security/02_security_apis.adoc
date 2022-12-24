@@ -9,6 +9,7 @@ jeon3029 <taejjeon@gmail.com>
 :image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_1.png
 :image-url2: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_2.png
 :image-url3: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_3.png
+:image-url4: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_4.png
 
 Spring Security 02-Form : {author}.
 
@@ -89,3 +90,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 image::{image-url3}[LogoutFilter,800]
 
+
+== Remember Me
+
+[source,java]
+----
+http
+      .rememberMe()
+      .rememberMeParameter("remember")
+      .tokenValiditySeconds(3600)
+      .alwaysRemember(false)
+      .userDetailsService(userDetailsService)
+      ;
+----
+
+image::{image-url4}[saved cookies]
+
+- remember-me 쿠키를 통해 JSESSIONID 가 없어도 인증 가능(저장)
