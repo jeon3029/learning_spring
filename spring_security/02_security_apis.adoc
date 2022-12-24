@@ -10,6 +10,7 @@ jeon3029 <taejjeon@gmail.com>
 :image-url2: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_2.png
 :image-url3: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_3.png
 :image-url4: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_4.png
+:image-url5: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_5.png
 
 Spring Security 02-Form : {author}.
 
@@ -107,3 +108,7 @@ http
 image::{image-url4}[saved cookies]
 
 - remember-me 쿠키를 통해 JSESSIONID 가 없어도 인증 가능(저장)
+
+=== RememberMeAuthenticationFilter
+
+image::{image-url5}[Remember me 인증,800]
