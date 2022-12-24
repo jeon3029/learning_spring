@@ -6,7 +6,7 @@ jeon3029 <taejjeon@gmail.com>
 :toc:
 :hardbreaks:
 // images:
-:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img1.png
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img1_1.png
 
 Spring Security Basic-01 : {author}.
 

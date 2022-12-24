@@ -23,28 +23,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
         .anyRequest().authenticated();
 		http
-        .formLogin()
-				.loginPage("/loginPage")
-				.defaultSuccessUrl("/")
-				.failureUrl("/login")
-				.usernameParameter("userId")
-				.passwordParameter("passwd")
-				.loginProcessingUrl("/login_proc")
-				.successHandler(new AuthenticationSuccessHandler() {
-					@Override
-					public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-						System.out.println("success : " + authentication.toString());
-            httpServletResponse.sendRedirect("/");
-					}
-				})
-				.failureHandler(new AuthenticationFailureHandler() {
-					@Override
-					public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-						System.out.println("failed : " + e.getMessage());
-            httpServletResponse.sendRedirect("/login");
-					}
-				})
-        .permitAll(); //loginPage 인증 해제
+        .formLogin();
+				// .loginPage("/loginPage")
+				// .defaultSuccessUrl("/")
+				// .failureUrl("/login")
+				// .usernameParameter("userId")
+				// .passwordParameter("passwd")
+				// .loginProcessingUrl("/login_proc")
+				// // .successHandler(new AuthenticationSuccessHandler() {
+				// // 	@Override
+				// // 	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+				// // 		System.out.println("success : " + authentication.toString());
+        // //     httpServletResponse.sendRedirect("/");
+				// // 	}
+				// // })
+				// .failureHandler(new AuthenticationFailureHandler() {
+				// 	@Override
+				// 	public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+				// 		System.out.println("failed : " + e.getMessage());
+        //     httpServletResponse.sendRedirect("/login");
+				// 	}
+				// })
+        // .permitAll(); //loginPage 인증 해제
 
 	}
 }

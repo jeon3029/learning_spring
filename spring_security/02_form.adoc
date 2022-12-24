@@ -1,0 +1,56 @@
+= Spring Security - Form 인증
+jeon3029 <taejjeon@gmail.com>
+:reproducible:
+:listing-caption: Source
+:source-highlighter: rouge
+:toc:
+:hardbreaks:
+// images:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_1.png
+:image-url2: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_2.png
+
+Spring Security 02-Form : {author}.
+
+== Basic Form Security
+
+.WebSecurityConfigurerAdapter
+[source,java]
+----
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.authorizeRequests()
+        .anyRequest().authenticated();
+		http
+        .formLogin();
+	}
+}
+----
+
+
+== UsernamePasswordAuthenticationFilter
+
+image::{image-url1}[UsernamePasswordAuthenticationFilter,800]
+
+- 인증이 완료된 객체는 `SecurityContextHolder.getContext().getAuthenticate()` 를 통해 호출 할 수 있음
+
+.AbstractAuthenticationProcessingFilter
+[source,java]
+----
+protected void successfulAuthentication(HttpServletRequest request,....){
+	//....
+	SecurityContextHolder.getContext().setAuthentication(authResult);
+}
+
+----
+
+
+== FilterChainProxy
+
+image::{image-url2}[FilterChainProxy,400]
+
+- 각 필터는 `FilterChainProxy` 에 의해 순서대로 등록하고 있음
+
