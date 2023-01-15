@@ -33,57 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
         .anyRequest().authenticated();
 		http
-        .formLogin()
-        // .loginPage("/login")
-				.defaultSuccessUrl("/")
-				.failureUrl("/login")
-				.usernameParameter("userId")
-				.passwordParameter("passwd")
-				.loginProcessingUrl("/login_proc")
-				.successHandler(new AuthenticationSuccessHandler() {
-					@Override
-					public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-						System.out.println("success : " + authentication.toString());
-            httpServletResponse.sendRedirect("/");
-					}
-				})
-				.failureHandler(new AuthenticationFailureHandler() {
-					@Override
-					public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-						System.out.println("failed : " + e.getMessage());
-            httpServletResponse.sendRedirect("/login");
-					}
-				})
-        .permitAll() //loginPage 인증 해제
-    .and()
-      .logout()
-        .logoutUrl("/logout")
-        .logoutSuccessUrl("login")
-        .deleteCookies("JSESSIONID","remember-me")
-        .addLogoutHandler(new LogoutHandler() {
+        .formLogin();
+        
 
-          @Override
-          public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-            HttpSession session = request.getSession();
-            session.invalidate();            
-          }
-          
-        })
-        .logoutSuccessHandler(new LogoutSuccessHandler() {
-
-          @Override
-          public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-              Authentication authentication) throws IOException, ServletException {
-                response.sendRedirect("/login");
-          }
-        })
-    .and()
-      .rememberMe()
-      .rememberMeParameter("remember")
-      .tokenValiditySeconds(3600)
-      .alwaysRemember(false)
-      .userDetailsService(userDetailsService)
-      ;
-
+    http.sessionManagement()
+      .sessionFixation().newSession()
+      .maximumSessions(1)
+      .maxSessionsPreventsLogin(false)
+      .expiredUrl("/expired");
+      
 	}
+
 }
