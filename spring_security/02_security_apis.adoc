@@ -13,6 +13,7 @@ jeon3029 <taejjeon@gmail.com>
 :image-url5: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_5.png
 :image-url6: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_6.png
 :image-url7: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_7.png
+:image-url8: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_security/img/img2_8.png
 
 Spring Security 02-Form : {author}.
 
@@ -139,7 +140,9 @@ image::{image-url7}[익명 객체 정보,500]
 . `AuthenticationTrustResolverImpl`
 * 익명객체 판단 로직
 
-== 동시 세션 제어
+== 세션 관리
+
+=== SessionManagementFilter
 
 [source,java]
 ----
@@ -158,5 +161,63 @@ protected void configure(HttpSecurity http) throws Exception {
 		//SessionCreationPolicy. Stateless	 	:  스프링 시큐리티가 생성하지 않고 존재해도 사용하지 않음
 }
 ----
+
+=== ConcurrentSessionFilter
+
+. 매 요청 마다 사용자의 세션 만료 여부를 체크
+* `session.isExpired()==true`
+** 로그 아웃 처리
+** 즉시 오류 페이지 응답
+
+=== 세션 관련된 전반적인 플로우
+
+image::{image-url8}[전반적인 플로우,800]
+
+== 인가 API
+
+
+. 선언적 방식
+* URL
+** `http.antMatchers("/users/**").hasRole(“USER")`
+
+* Method
+** `@PreAuthorize(“hasRole(‘USER’)”)
+    public void user(){ System.out.println(“user”)}`
+
+. 동적 방식(DB 연동)
+* URL
+* Method
+
+=== 선언적 방식 code example
+
+[source,java]
+----
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+	http
+	.antMatcher("/shop/**")
+	.authorizeRequests()
+	.antMatchers("/shop/login", "/shop/users/**").permitAll()
+	.antMatchers("/shop/mypage").hasRole("USER")
+	.antMatchers("/shop/admin/pay").access("hasRole('ADMIN')");
+	.antMatchers("/shop/admin/**").access("hasRole('ADMIN') or hasRole(‘SYS ')");
+	.anyRequest().authenticated()
+}
+----
+
+=== 인가 API 표현식
+[options="header"]
+|=============================================================
+| 메소드                  | 동작
+| authenticated()       | 인증된 사용자의 접근을 허용
+| fullyAuthenticated()  | 인증된 사용자의 접근을 허용, rememberMe 인증 제외
+| permitAll()           | 무조건 접근을 허용
+| denyAll()             | 무조건 접근을 허용하지 않음
+| anonymous()           | 익명사용자의 접근을 허용
+| rememberMe()          | 기억하기를 통해 인증된 사용자의 접근을 허용
+| access(String)        | 주어진 SpEL 표현식의 평가 결과가 true이면 접근을 허용
+| hasRole(String)       |  사용자가 주어진 역할이 있다면 접근을 허용
+|  hasAuthority(String) |  사용자가 주어진 권한이 있다면
+|=============================================================
 
 
