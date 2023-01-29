@@ -1,0 +1,85 @@
+= 02.JPA 시작(Hello JPA)
+:reproducible:
+:listing-caption: Source
+:source-highlighter: rouge
+:toc:
+:hardbreaks:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img2_1.png
+== 프로젝트 생성
+
+=== H2 Database
+
+====
+.http://www.h2database.com/
+* 최고의 실습용 DB 
+* 가볍다.(1.5M)
+* 웹용 쿼리툴 제공
+* MySQL, Oracle 데이터베이스 시뮬레이션 기능 시퀀스, AUTO INCREMENT 기능 지원
+====
+
+=== Maven 
+
+====
+.https://maven.apache.org/
+* 자바 라이브러리, 빌드 관리
+* 라이브러리 자동 다운로드 및 의존성 관리
+====
+
+==== 프로젝트 생성
+
+maven project 생성 이후 디펜덴시 주입
+
+.pom.xml
+[source,xml]
+----
+<dependencies>
+		<!-- JPA 하이버네이트 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.6.14.Final</version>
+		</dependency>
+		<!-- H2 데이터베이스 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.214</version>
+		</dependency>
+	</dependencies>
+----
+사용하는 버전은 강의의 버전과 다른데, 스프링부트 2.7.9 호환 버전으로 설치 함
+https://docs.spring.io/spring-boot/docs/2.7.9-SNAPSHOT/reference/html/dependency-versions.html#appendix.dependency-versions
+
+.resources/META-INF/persistence.xml
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+			 xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="hello">
+		<properties>
+			<!-- 필수 속성 -->
+			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+			<property name="javax.persistence.jdbc.user" value="sa"/>
+			<property name="javax.persistence.jdbc.password" value=""/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+			<!-- 옵션 -->
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+			<property name="hibernate.use_sql_comments" value="true"/>
+			<!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
+		</properties>
+	</persistence-unit>
+</persistence>
+----
+====
+* `value="org.hibernate.dialect.H2Dialect"``
+* 방언: SQL 표준을 지키지 않는 특정 데이터베이스만의 고유한 기능
+** H2 : org.hibernate.dialect.H2Dialect
+** Oracle 10g : org.hibernate.dialect.Oracle10gDialect 
+** MySQL : org.hibernate.dialect.MySQL5InnoDBDialect
+** 하이버네이트는 40가지 이상의 데이터베이스 방언 지원
+====
+image::{image-url1}[Dialect : jpa 데이터베이스 방언,800]

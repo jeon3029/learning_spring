@@ -4,7 +4,6 @@
 :source-highlighter: rouge
 :toc:
 :hardbreaks:
-:fn-link1: footnote:[]
 
 == JPA(Java Persistent API)
 
