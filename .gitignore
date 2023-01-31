@@ -4,3 +4,4 @@ test.adoc
 .vscode
 **/pdf
 .idea
+**/target
