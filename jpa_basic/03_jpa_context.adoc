@@ -1,0 +1,128 @@
+= 02.JPA 영속성 관리
+:reproducible:
+:listing-caption: Source
+:source-highlighter: rouge
+:toc:
+:hardbreaks:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img3_1.png
+
+his adventure begins on a frigid morning.
+We've run out of coffee beans, but leaving our office means venturing into certain peril.
+Yesterday, a colony of ravenous Wolpertingers descended from the foothills.
+No one can find the defensive operations manual, and our security experts are on an off-the-grid team-building retreat in Katchanga.
+
+What are we going to do?
+
+== 엔티티 생명주기
+
+.Entity 생명주기
+image::{image-url1}[jpa 엔티티 생명주기,800]
+
+.비영속
+[source,java]
+----
+//객체를 생성한 상태(비영속)
+Member member = new Member();
+member.setId("member1");
+member.setUsername("회원1");
+----
+
+=== 영속
+[source,java]
+----
+EntityManager em = emf.createEntityManager();
+em.getTransaction().begin();
+//객체를 저장한 상태(영속)
+em.persist(member);
+----
+
+.준영속, 삭제
+[source,java]
+----
+//회원 엔티티를 영속성 컨텍스트에서 분리, 준영속 상태
+em.detach(member);
+//객체를 삭제한 상태(삭제)
+em.remove(member);
+----
+
+==== 영속성 컨테이너 방식의 이점
+
+* 1차 캐시 
+
+
+.1차캐시
+[source,java]
+----
+Member member = new Member();
+member.setId("member1");
+member.setUsername("회원1");
+//1차 캐시에 저장됨
+em.persist(member);
+//1차 캐시에서 조회
+Member findMember = em.find(Member.class, "member1");
+//데이터베이스에서 조회(캐시에 없음
+Member findMember2 = em.find(Member.class, "member2");
+----
+* 동일성(identity) 보장
+
+.동일성 보장
+[source,java]
+----
+Member a = em.find(Member.class, "member1");
+Member b = em.find(Member.class, "member1");
+System.out.println(a == b); //동일성 비교 true
+----
+
+* 트랜잭션을 지원하는 쓰기 지연(transactional write-behind)
+
+[source,java]
+----
+//엔티티 매니저는 데이터 변경시 트랜잭션을 시작해야 한다.
+transaction.begin(); // [트랜잭션] 시작
+em.persist(memberA);
+em.persist(memberB);
+//여기까지 INSERT SQL을 데이터베이스에 보내지 않는다.
+//커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
+transaction.commit(); // [트랜잭션] 커밋
+----
+
+
+플러시
+
+NOTE: em.flush() - 직접 호출 
+ 트랜잭션 커밋 - 플러시 자동 호출 
+ JPQL 쿼리 실행 - 플러시 자동 호출
+
+====
+* 영속성 컨텍스트를 비우지 않음
+* 영속성 컨텍스트의 변경내용을 데이터베이스에 동기화
+* 트랜잭션이라는 작업 단위가 중요 -> 커밋 직전에만 동기화 하면 됨
+====
+
+====
+`em.setFlushMode(FlushModeType.COMMIT)`
+
+* FlushModeType.AUTO
+** 커밋이나 쿼리를 실행할 때 플러시 (기본값)
+* FlushModeType.COMMIT
+** 커밋할 때만 플러시
+====
+
+* 변경 감지(Dirty Checking) 
+* 지연 로딩(Lazy Loading)
+
+=== 준영속
+
+영속 -> 준영속
+영속 상태의 엔티티가 영속성 컨텍스트에서 분리(detached) 
+영속성 컨텍스트가 제공하는 기능을 사용 못함
+
+====
+* em.detach(entity)
+** 특정 엔티티만 준영속 상태로 전환
+* em.clear()
+** 영속성 컨텍스트를 완전히 초기화
+* em.close()
+** 영속성 컨텍스트를 종료
+====
+
