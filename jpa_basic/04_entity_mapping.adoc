@@ -22,6 +22,12 @@
 ** 저장할 필드에 final 사용 x
 
 == 데이터베이스 스키마 자동생성 속성
+
+.persistence.xml
+[source,xml]
+----
+<property name="hibernate.hbm2ddl.auto" value="create" />
+----
 [options="header"]
 |===============================================
 | 옵션          | 설명                              
