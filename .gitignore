@@ -5,3 +5,4 @@ test.adoc
 **/pdf
 .idea
 **/target
+*.html

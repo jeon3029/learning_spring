@@ -4,6 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+
+import org.hibernate.engine.spi.AbstractDelegatingSharedSessionBuilder;
+
 import java.util.List;
 
 public class JpaMain {
@@ -13,13 +16,11 @@ public class JpaMain {
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();
 		try {
+      Member member = new Member();
+      // member.setId(1L);
+      member.setUsername("h2database");
+      em.persist(member);
 
-
-			List<Member> result = em.createQuery("select m from Member as m", Member.class).setFirstResult(5).setMaxResults(8)
-					.getResultList();
-			for (Member m : result) {
-				System.out.println("m.getName() = " + m.getName());
-			}
 			tr.commit();
 		} catch (Exception e) {
 			tr.rollback();
