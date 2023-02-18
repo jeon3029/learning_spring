@@ -181,6 +181,8 @@ private Long id;
         primary key (id)
     )
 ----
+*** AUTO_ INCREMENT는 데이터베이스에 INSERT SQL을 실행한 이후에 ID 값을 알 수 있음
+*** IDENTITY 전략은 em.persist() 시점에 즉시 INSERT SQL 실행 하고 DB에서 식별자를 조회
 ** SEQUENCE: 데이터베이스 시퀀스 오브젝트 사용, ORACLE
 +
 [source,sh]
