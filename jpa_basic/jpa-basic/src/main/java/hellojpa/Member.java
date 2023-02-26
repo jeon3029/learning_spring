@@ -18,9 +18,9 @@ public class Member {
 
   private int age;
 
-  @ManyToOne
-  @JoinColumn(name = "TEAM_ID")
-  private Team team;
+  // @ManyToOne
+  // @JoinColumn(name = "TEAM_ID")
+  // private Team team;
 
   public Long getId() {
     return id;
@@ -46,13 +46,13 @@ public class Member {
     this.age = age;
   }
 
-  public Team getTeam() {
-    return team;
-  }
+  // public Team getTeam() {
+  //   return team;
+  // }
 
-  public void setTeam(Team team) {
-    this.team = team;
-  }
+  // public void setTeam(Team team) {
+  //   this.team = team;
+  // }
   
 }
 

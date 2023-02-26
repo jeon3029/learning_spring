@@ -1,0 +1,217 @@
+= 06.Lots of mappings
+:reproducible:
+:listing-caption: Source
+:source-highlighter: rouge
+:toc:
+:hardbreaks:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img6_1.png
+:image-url2: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img6_2.png
+:image-url3: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img6_3.png
+:image-url4: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img6_4.png
+:image-url5: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img6_5.png
+
+
+== 다중성
+
+. 다대일: @ManyToOne
+. 일대다: @OneToMany
+. 일대일: @OneToOne
+. 다대다: @ManyToMany
+** 실무에서 쓰면 안된다..
+
+== 다대일(N:1)
+
+단방향, 양방향
+
+.테이블
+** 테이블은 방향 개념이 없음
+
+.객체
+** 참조용 필드가 있는 쪽으로만 참조 가능
+** 한쪽에서만 참조하면 단방향, 양쪽에서 참조하면 양방향
+
+=== 연관관계의 주인
+* 테이블은 외래키 하나로 두 테이블간 연관관계를 맺음
+* 객체는 A->B B->A 참조가 두군데
+* 연관관계의 주인 : 외래키를 관리하는 참조
+* 주인의 반대편 : 외래키 영향을 주지 않음(단순 조회만)
+
+.다대일 단방향 예제
+image::{image-url1}[다대일 단방향,700]
+
+.다대일 양방향 예제
+image::{image-url2}[다대일 양방향,700]
+
+=== 다대일 양방향 정리
+
+....
+* 외래키가 있는쪽이 연관관계 주인
+* 양쪽을 참조하도록 개발
+....
+
+== 일대다(1:N)
+
+권장하지 않음
+
+.일대다 단방향
+image::{image-url3}[일대다 단방향,700]
+
+* 일대다 단방향은 일대다(1:N)에서 일(1)이 연관관계의 주인
+* 테이블 일대다 관계는항상다(N)쪽에 외래키가 있음(테이블 관점)
+* 객체와 테이블의 차이 때문에반대편 테이블의 외래 키를 관리하는 `특이한 구조`
+* @JoinColumn을 꼭 사용해야 함. 그렇지 않으면 조인 테이블 방식을 사용함(중간에 테이블을 하나 
+추가함)
+** 연관관계 관리를 위해 추가로 UPDATE SQL 실행
+** 일대다 단방향 매핑보다는 다대일 양방향 매핑을 사용하자
+
+[source,java]
+----
+@Entity
+public class Team {
+  @Id@GeneratedValue
+  @Column(name="TEAM_ID")
+  private Long id;
+
+  private String name;
+  
+  @OneToMany
+  @JoinColumn(name="TEAM_ID")
+  List<Member> members = new ArrayList<Member>();
+}
+@Entity
+public class Member {
+  @Id @GeneratedValue
+  private Long id;
+
+  @Column(name = "USERNAME")
+  private String name;
+}
+----
+
+[source,sh]
+----
+Hibernate: 
+    call next value for hibernate_sequence
+Hibernate: 
+    call next value for hibernate_sequence
+Hibernate: 
+    /* insert hellojpa.Member
+        */ insert 
+        into
+            Member
+            (age, USERNAME, id) 
+        values
+            (?, ?, ?)
+Hibernate: 
+    /* insert hellojpa.Team
+        */ insert 
+        into
+            Team
+            (name, TEAM_ID) 
+        values
+            (?, ?)
+Hibernate: 
+    /* create one-to-many row hellojpa.Team.members */ update
+        Member 
+    set
+        TEAM_ID=? 
+    where
+        id=?
+----
+* insert 두개, update 쿼리가 나가는 걸 확인할 수 있음(다른 테이블쪽 키 업데이트 이기 때문)
+
+
+=== 일대다 양방향?
+
+[source,java]
+----
+class Member{
+  // 값은 쓰는데 업데이트를 안하게 됨(읽기 전용)
+  @ManyToOne
+  @JoinColumn(name="TEAM_ID",insertable=false, updatable=false)
+  Team team;
+}
+
+----
+====
+* 이런 매핑은 공식적으로 X
+* @JoinColumn(insertable=false, updatable=false)
+* 다대일 양방향을 사용하자..
+====
+
+== 일대일(1:1)
+
+====
+* 일대일 관계는 그 반대도 일대일
+* 주 테이블 이나 대상 테이블 중에 외래키 선택가능
+** 주 테이블에 외래 키
+** 대상 테이블에 외래 키
+* 외래 키에 데이터베이스 유니크(UNI) 제약조건 추가
+====
+
+image::{image-url4}[일대일 매핑,700]
+
+=== 주 테이블에 외래키
+
+* 다대일 양방향 매핑 처럼 외래 키가 있는 곳이 연관관계의 주인
+* 반대편은 mappedBy 적용
+
+[source,java]
+----
+@Entity
+public class Locker{
+  @Id @GeneratedValue
+  private Long id;
+
+  private String name;
+
+  //양방향 하고 싶다면..? 아래내용 추가
+  @OneToOne(mappedBy="locker")
+  private Member member;
+}
+
+@Entity
+public class Member{
+  //....
+  @OneToTOne
+  @JoinColumn(name="LOCKER_ID")
+  private Locker locker;
+}
+----
+
+=== 대상 테이블에 외래키
+
+* 단방향 관계는 JPA 지원X
+* 양방향 관계는 지원
+
+=== 일대일 정리
+
+====
+.주 테이블에외래키
+* 주 객체가 대상 객체의 참조를 가지는 것 처럼 주 테이블에 외래 키를 두고 대상 테이블을 찾음
+* 객체지향 개발자 선호
+* JPA 매핑 편리
+* 장점: 주 테이블만 조회해도 대상 테이블에 데이터가 있는지 확인 가능
+* 단점: 값이 없으면 외래 키에 null 허용
+
+.대상테이블에외래키
+* 대상 테이블에 외래 키가 존재
+* 전통적인 데이터베이스 개발자 선호
+* 장점: 주 테이블과 대상 테이블을 일대일에서 일대다 관계로 변경할 때 테이블 구조 유지 
+* 단점: 프록시 기능의 한계로 지연 로딩으로 설정해도 항상 즉시 로딩됨(프록시는 뒤에서 설명)
+====
+
+== 다대다
+
+* 관계형 데이터베이스는 정규화된 테이블 2개로 다대다 관계를 표현할 수 없음
+* 연결 테이블을 추가해서 일대다, 다대일 관계로 풀어내야함
+* 한계점...
+** 추가적인 데이터를 추가할 수 없음
+
+.many to many 한계점
+image::{image-url5}[many to many 한계점,700]
+
+=== 어떻게 해결할 까..
+
+* @ManyToMany -> @OneToMany, @ManyToOne
+* 중간에 연결테이블을 엔티티로 승격
