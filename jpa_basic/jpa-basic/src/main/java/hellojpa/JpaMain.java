@@ -5,9 +5,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.hibernate.engine.spi.AbstractDelegatingSharedSessionBuilder;
-
-import java.util.List;
 
 public class JpaMain {
 	public static void main(String[] args) {
@@ -16,12 +13,28 @@ public class JpaMain {
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();
 		try {
+
+      Team team = new Team();
+      team.setName("teamA");
+      em.persist(team);
+
       Member member = new Member();
-      // member.setId(1L);
-      member.setUsername("h2database");
+      member.setName("member1");
+      member.setTeam(team);
+      
       em.persist(member);
 
-			tr.commit();
+      Team team2 = new Team();
+      team2.setName("team2");
+      member.setTeam(team2);
+      em.persist(team2);
+
+
+      Member findMember = em.find(Member.class, member.getId());
+      Team findTeam = findMember.getTeam();
+      System.out.println(findTeam.getName());
+
+      tr.commit();
 		} catch (Exception e) {
 			tr.rollback();
 			System.out.println("transaction error : " + e);

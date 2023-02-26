@@ -141,7 +141,7 @@ int memberSize = findTeam.getMembers().size(); //역방향 조회
 
 .테이블 관점
 * 테이블은 외래 키 하나로 두 테이블의 연관관계를 관리
-* MEMBER.TEAM_ID 외래 키 하나로 양방향 연관관계 가짐  (양쪽으로 조인할 수 있다.)
+* MEMBER.TEAM_ID 외래 키 하나로 양방향 연관관계 가짐 (양쪽으로 조인할 수 있다.)
 
 === 누구를 주인으로?
 
@@ -162,7 +162,7 @@ member.setName("member1");
 team.getMembers().add(member);
 em.persist(member);
 ----
-. 연관관계의 주인에 값을 입력해야 한다
+* 연관관계의 주인에 값을 입력해야 한다
 [source,java]
 ----
 Team team = new Team();
@@ -176,18 +176,30 @@ team.getMembers().add(member);
 member.setTeam(team); //**!!
 em.persist(member);
 ----
-.. 순수한 객체 관계를 고려하면 항상 양쪽다 값을 입력해야 한다.
 
 .순수 객체 상태를 고려해서 항상 양쪽에 값을 설정하자
 . 연관관계 편의 메소드를 생성하자
 . 양방향 매핑시에 무한 루프를 조심하자
-.. 예: toString(), lombok, JSON 생성 라이브러리
+** 예: toString(), lombok, JSON 생성 라이브러리
+** Controller 에서는 Entity 를 반환하지 말자!
+
+.실수하지 않기 위한 양방향 `Setter`
+[source,java]
+----
+//연관관계 편의 메서드
+//setters 는 관례등의 매핑때문에 안쓰는편 
+public void changeTeam(Team team){
+  this.team = team;
+  team.getMembers.add(this);
+}
+----
 
 === 양방향 매핑 정리
 
-. 방향 매핑만으로도 이미 연관관계 매핑은 완a료
+. 방향 매핑만으로도 이미 연관관계 매핑은 완료
+** 최초 설계할 때 단방향 매핑으로 설계를 끝내라
 . 양방향 매핑은 반대 방향으로 조회(객체 그래프 탐색) 기능이 추 가된 것 뿐
-. JPQL에서 역방향으로 탐색할 일이 많음
+. `JPQL` 에서 역방향으로 탐색할 일이 많음
 . 단방향 매핑을 잘 하고 양방향은 필요할 때 추가해도 됨 (테이블에 영향을 주지 않음)
 
-INFO: 연관관계의 주인은 외래 키의 위치를 기준으로 정해야함
+INFO: 연관관계의 주인은 외래 키의 위치를 기준으로 정해야함(비즈니스 로직으로 결정하면 안 됨)
