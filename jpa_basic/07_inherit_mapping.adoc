@@ -109,6 +109,8 @@ image::{image-url3}[구현클래스마다 테이블 전략,700]
 == @MappedSuperclass
 
 공통 매핑 정보가 필요할 때 사용
+
+.공통매핑 예시
 image::{image-url4}[MappedSuperclass,700]
 
 [source,java]
