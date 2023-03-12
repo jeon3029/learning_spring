@@ -14,14 +14,8 @@ public class JpaMain {
 		tr.begin();
 		try {
       Member member = new Member();
-      member.setName("member1");
+      member.setUsername("test");
       em.persist(member);
-
-      Team team = new Team();
-      team.setName("teamA");
-      team.getMembers().add(member);
-      em.persist(team);
-
       
       tr.commit();
 		} catch (Exception e) {
