@@ -7,3 +7,4 @@ test.adoc
 **/target
 *.html
 PLAY
+jpa-ex1.iml
