@@ -1,0 +1,10 @@
+= 08.Proxy
+:reproducible:
+:listing-caption: Source
+:source-highlighter: rouge
+:toc:
+:hardbreaks:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/jpa_basic/img/img8_1.png
+
+
+

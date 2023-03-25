@@ -15,7 +15,13 @@ public class JpaMain {
 		try {
       Member member = new Member();
       member.setUsername("test");
+	  Team team = new Team();
+	  team.setName("myteam");
+	  member.setTeam(team);
+
       em.persist(member);
+	  em.persist(team);
+
       
       tr.commit();
 		} catch (Exception e) {

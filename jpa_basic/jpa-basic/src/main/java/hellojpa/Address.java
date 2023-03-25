@@ -1,8 +1,8 @@
 package hellojpa;
 
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 
-@Entity
+@Embeddable
 public class Address {
   private String city;
   private String street;
