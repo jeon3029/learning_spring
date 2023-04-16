@@ -42,10 +42,10 @@ https://spring.io/blog/2022/10/20/spring-boot-2-7-5-available-now
 == Containerless
 
 .containerless
-image::{image-url2}[container]
+image::{image-url2}[container,800]
 
 .(참고) 전형적인 Spring 을 구성하는 Web.xml
-image::{image-url1}[web.xml]
+image::{image-url1}[web.xml,800]
 
 ====
 Servelet Container 가 필요하지만 설치/관리/유지보수를 쉽게.. 할수 없을까?
@@ -55,7 +55,7 @@ Servelet Container 가 필요하지만 설치/관리/유지보수를 쉽게.. �
 == Opinionated
 
 .(참고) Spring 설계철학
-image::{image-url3}[Spring 철학]
+image::{image-url3}[Spring 철학,500]
 
 > 자기 의견을 강하게 고집하고 있다.
 
