@@ -1,4 +1,4 @@
-= 01. 스프링부트 시작하기
+= 02. 스프링부트 시작하기
 :reproducible:
 :listing-caption: Source
 :source-highlighter: highlightjs
@@ -52,6 +52,20 @@ Java Version: 11
 Dependency: Web
 ----
 ====
+
+== HelloController
+
+.Hello World for MVC Controller
+[source,java]
+----
+@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String hello(String name) {
+        return "Hello " + name;
+    }
+}
+----
 
 
 == Http Response
