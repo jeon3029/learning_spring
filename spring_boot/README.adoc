@@ -4,5 +4,13 @@
 :source-highlighter: highlightjs
 :hardbreaks:
 
-토비의 스프링 부트 - 이해와 원리
-https://inf.run/4MoB
+.토비의 스프링 부트 - 이해와 원리
+* https://inf.run/4MoB
+
+.Source Code
+* https://github.com/tobyspringboot/helloboot
+
+.Discord
+* https://discord.gg/x4eT5HYk6X
+
+
