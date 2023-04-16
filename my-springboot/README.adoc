@@ -1,0 +1,16 @@
+= Springboot playground
+:reproducible:
+:listing-caption: Source
+:source-highlighter: highlightjs
+:toc:
+:hardbreaks:
+
+This is playground for spring-boot 3.0
+
+
+== Reference
+
+https://start.spring.io/
+https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html#getting-started
+https://www.youtube.com/watch?v=UgX5lgv4uVM
+
