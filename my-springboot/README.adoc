@@ -2,7 +2,6 @@
 :reproducible:
 :listing-caption: Source
 :source-highlighter: highlightjs
-:toc:
 :hardbreaks:
 
 This is playground for spring-boot 3.0
