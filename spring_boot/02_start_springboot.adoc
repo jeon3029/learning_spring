@@ -1,0 +1,99 @@
+= 01. 스프링부트 시작하기
+:reproducible:
+:listing-caption: Source
+:source-highlighter: highlightjs
+:hardbreaks:
+:image-url1: https://cdn.jsdelivr.net/gh/jeon3029/learning_spring@master/spring_boot/img/img2-1.png
+
+
+== 개발환경
+
+====
+.JDK
+* openjdk 8,11,17 JDK
+** 다앙한 배포버전
+*** Eclipse 
+**** https://projects.eclipse.org/projects/adoptium.temurin
+*** Temurin
+*** Microsoft OpenJDK 
+*** Amazon Corretto Azul JDK 
+*** Oracle JDK
+** 관리방법
+
+** https://sdkman.io/ https://github.com/shyiko/jabba
+
+.IDE
+* IntelliJ IDEA :https://www.jetbrains.com/idea/download
+* STS : https://spring.io/tools
+* Visual Studio Code : https://code.visualstudio.com/
+
+.(참고만)SpringBoot
+* Spring Boot CLI : https://docs.spring.io/spring- boot/docs/2.7.x/reference/htmlsingle/#getting-started.installing.cli
+** cli 로 init 가능하긴 함(재미삼아서 해보는 정도)
+====
+
+== HelloBoot
+
+
+====
+.https://start.spring.io/
+image::{image-url1}[spring-initializr]
+
+[caption=]
+.Current class
+----
+Project: Gradle 
+Langauge: Java
+SpringBoot Version: 2.7.6 
+Group Id: tobyspring
+Name: hello
+Packaging: Jar
+Java Version: 11 
+Dependency: Web
+----
+====
+
+
+== Http Response
+
+====
+* Browser
+* curl
+* Httpie : https://httpie.io/
+* Intellij IDEA Ultimate- http request
+* Postman : https://www.postman.com/
+* JUnit Test
+* 등등 API 테스트 도구들
+====
+
+== HTTP
+
+.Http기본 구조를 이해하고 내용을 확인할 수 있어야 한다
+====
+.Request
+* Request Line: Method, Path, HTTP Version 
+* Headers
+* Message Body
+
+.Response
+* Status Line: HTTP Version, Status Code, Status Text 
+* Headers
+* Message Body
+====
+
+.sample Request / Response
+----
+GET /hello?name=Spring HTTP/1.1 Accept: */*
+Accept-Encoding: gzip, deflate Connection: keep-alive
+Host: localhost:8080
+User-Agent: HTTPie/3.2.1
+
+
+HTTP/1.1 200
+Connection: keep-alive
+Content-Length: 12
+Content-Type: text/plain;charset=UTF-8
+Date: Thu, 01 Dec 2022 01:45:15 GMT
+Keep-Alive: timeout=60
+Hello Spring
+----
